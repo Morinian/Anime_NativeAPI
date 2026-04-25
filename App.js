@@ -9,6 +9,7 @@ import Listagem from './componentes/listagem.js';
 export default function App() {
  
   // Aqui não tive problemas já que foi o código que fizemos em aula 
+  // use inspecionar como celular 
 
   const [data, setData] = useState([]);
   const [pesquisa, setPesquisa] = useState("");
@@ -32,7 +33,7 @@ export default function App() {
         <Text style={styles.textaoTopo}>Buscar Anime API</Text>  
 
         <TouchableOpacity onPress={carregarDesenho} style={styles.button}>
-          <Text style={styles.textao}> Listar Desenhos</Text>
+          <Text style={styles.textao}> Listar Animes</Text>
         </TouchableOpacity>
 
         <TextInput 
