@@ -19,7 +19,7 @@ export default function App() {
   const [data, setData] = useState([]);
   const [pesquisa, setPesquisa] = useState("");
 
-  //Usei para entender corrigir alguns erros nessa de aplicar o try
+  //Usei para entender e corrigir alguns erros nessa de aplicar o try
   async function carregarDesenho(){
     try {
       setLoading(true);
