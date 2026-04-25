@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
 import { Image } from 'react-native';
+import { ActivityIndicator } from 'react-native';
 import { FlatList } from 'react-native';
 import { StatusBar } from 'expo-status-bar';
 import { ScrollView, TextInput, StyleSheet, Text, TouchableOpacity, View } from 'react-native';
@@ -7,23 +8,50 @@ import { ScrollView, TextInput, StyleSheet, Text, TouchableOpacity, View } from 
 import Listagem from './componentes/listagem.js';
 
 export default function App() {
- 
+
+  //Usem useState pra guardar os dados e o estado de loading/erro
+  const [loading, setLoading] = useState(false);
+  const [erro, setErro] = useState(null);
+
   // Aqui não tive problemas já que foi o código que fizemos em aula 
   // use inspecionar como celular 
 
   const [data, setData] = useState([]);
   const [pesquisa, setPesquisa] = useState("");
 
+  //Usei para entender corrigir alguns erros nessa de aplicar o try
   async function carregarDesenho(){
-    const response = await fetch(`https://api.jikan.moe/v4/anime`);
-    const jsonReturn = await response.json();
-    setData(jsonReturn.data);
+    try {
+      setLoading(true);
+      setErro(null);
+
+      const response = await fetch('https://api.jikan.moe/v4/anime');
+      const jsonReturn = await response.json();
+
+      setData(jsonReturn.data);
+    } catch (err) {
+      setErro("Erro ao carregar dados (turururuuu)");
+    } finally {
+      setLoading(false);
+    }
   }
 
   async function pesquisarDesenho(){
-    const response = await fetch(`https://api.jikan.moe/v4/anime?q=${pesquisa}`);
-    const jsonReturn = await response.json();
-    setData(jsonReturn.data);
+    try {
+      setLoading(true);
+      setErro(null);
+
+      const response = await fetch(
+        `https://api.jikan.moe/v4/anime?q=${pesquisa}`
+      );
+      const jsonReturn = await response.json();
+
+      setData(jsonReturn.data);
+    } catch (err) {
+      setErro("Erro na busca 😢");
+    } finally {
+      setLoading(false);
+    }
   }
 
   return (
@@ -48,8 +76,22 @@ export default function App() {
         </TouchableOpacity>
         
         <View style={styles.caixaLista}>
+
+        {loading && (
+          <ActivityIndicator size="large" color="#C252F2" />
+        )}
+
+        {erro && (
+          <Text style={{ color: 'red', textAlign: 'center' }}>
+            {erro}
+          </Text>
+        )}
+
+        {!loading && !erro && (
           <Listagem data={data} />
-        </View>
+        )}
+
+      </View>
 
       </View>
     </ScrollView>
